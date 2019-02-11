@@ -1,0 +1,10 @@
+node_modules/
+config/add_stuff.sql
+config/create_groups.sql
+config/create_groups.sql
+routes/every_con.sql
+routes/every_m.sql
+routes/routes.js
+config/config.js
+config/query.js
+config/jwt_config.js
