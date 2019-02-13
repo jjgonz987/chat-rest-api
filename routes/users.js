@@ -84,22 +84,28 @@ router.post('/register',(req, res)=>{
 
 
 router.post("/LogIn", (req, res) =>{
+    
     const {email, password} = req.body;
     if(!email || !password){
         res.status(409).json({"error": "Missing information"});
     }
-
-    pool.getConnection(query.find_user, email, (err, email_result)=>{
-        if(err){
+    
+    connection.query(query.find_user, email,(err, email_result)=>{
+        if(err){  
             res.status(409).json({"error": "Having trouble on our end "});
+            throw error; 
         }
-        if(email_result === 1){
+        
+        
+        if(email_result.length === 1){
+            
             const hash_password = email_result[0].password
 
             bcrypt.compare(password, hash_password, function(err, hash_result) {
+                
                 if(hash_result){
 
-                    let row = JSON.stringify(result);
+                    let row = JSON.stringify(email_result);
                     let data = JSON.parse(row);
 
                     const user = {
@@ -118,6 +124,9 @@ router.post("/LogIn", (req, res) =>{
                 }
             });
 
+        }
+        else{
+            res.json({"error": "invalid username or password"});
         }
     });
 
